@@ -1,0 +1,179 @@
+.service__container .service__content {
+  background: var(--color-white);
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+.service__container h1 {
+  width: fit-content;
+  margin: 2rem auto;
+  text-align: center;
+  font-size: 2rem;
+  position: relative;
+  perspective: 40px;
+}
+.service__container h1::after,
+.service__container h1::before {
+  content: "";
+  display: block;
+  width: 30px;
+  height: 30px;
+  background: red;
+  position: absolute;
+  top: 0.7rem;
+  right: -0.7rem;
+  transform: rotate(20deg);
+  z-index: -1;
+}
+.service__container h1::after {
+  background: orange;
+  transform: rotate(35deg);
+}
+.service__container p {
+  color: var(--color-violet);
+  text-align: center;
+  margin: 2rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+.service__container form .layersInput {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1.5rem;
+}
+.service__container form .layersInput > input[type="file"] {
+  display: none;
+}
+.service__container form .outputDimentions {
+  display: flex;
+  margin-top: 3rem;
+  gap: 2rem;
+}
+
+.outputImagesCn {
+  position: absolute;
+  z-index: 3;
+  width: 90%;
+  height: 90%;
+  top: 5%;
+  left: 5%;
+  display: none;
+  overflow-y: scroll;
+  padding: 1rem;
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 1rem;
+}
+.outputImagesCn.active {
+  display: block;
+}
+.outputImages {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.outputImagesCn .closeButton {
+  background: #212529a0;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+.outputImagesCn .closeButton button {
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  margin-top: 0.2rem;
+}
+.outputImagesCn .closeButton button svg path {
+  stroke: #909294;
+  transition: var(--transition);
+}
+.outputImagesCn .closeButton button:hover svg path {
+  stroke: white;
+}
+.outputImages .Image {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.outputImages .Image canvas {
+  width: 100%;
+}
+
+.outputImagesCn .Image .download {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: var(--transition);
+}
+.outputImagesCn .Image:hover .download {
+  background: rgba(0, 0, 0, 0.5);
+}
+.outputImagesCn .Image .download button {
+  border: 2px solid;
+}
+.add-layer {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+.btn.add-layer__btn {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.btn.add-layer__btn svg {
+  font-size: 1rem;
+}
+.processing {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.processing .process_btn {
+  background: var(--color-violet);
+  border: 2px solid var(--color-violet);
+}
+.processing .process_btn:hover,
+input[type="reset"] {
+  background: transparent;
+  color: var(--color-violet);
+}
+/* ================ MEDIA QUERIES (MEDIUM DEVICES) ============= */
+
+@media screen and (max-width: 1024px) {
+  .service__container form .layersInput {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+  .outputImages {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+/* ================ MEDIA QUERIES (SMALL DEVICES) ============= */
+
+@media screen and (max-width: 600px) {
+  .outputImages {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .service__container form .layersInput {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}

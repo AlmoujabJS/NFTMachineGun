@@ -1,0 +1,100 @@
+.contact__container {
+  --input-margin: 0.6rem;
+  margin-top: 2rem;
+}
+.contact__container form {
+  display: grid;
+  grid-template-columns: 1fr;
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 1rem;
+}
+.contact__container form h1 {
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--color-orange);
+}
+
+.contact__container form input,
+.contact__container form textarea {
+  font-size: 1rem;
+  font-weight: 300;
+  font-family: Roboto;
+  padding: 0.4rem var(--input-margin);
+  outline: none;
+  border: none;
+  border-bottom: 0.15rem solid var(--color-light-orange);
+  background: transparent;
+  color: var(--color-white);
+  margin-bottom: 1.5rem;
+  resize: none;
+}
+.contact__container form button {
+  width: fit-content;
+  margin: 0 auto;
+}
+.contact__container form label {
+  font-size: 0.9rem;
+  font-weight: 300;
+  margin-left: var(--input-margin);
+  margin-bottom: 0.3rem;
+  display: inline-block;
+  position: relative;
+  top: 1.82rem;
+  cursor: text;
+  color: var(--color-light-orange);
+  transition: var(--transition);
+}
+.contact__container form label.active {
+  top: 0;
+}
+.message_is_sent {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-white);
+  color: green;
+  border-radius: 2rem;
+  padding: 0.8rem 2rem;
+  font-size: 0.9rem;
+  font-weight: 300;
+  transition: var(--transition);
+  animation: slideDown;
+  animation-fill-mode: forwards;
+  animation-duration: 2000ms;
+  animation-timing-function: ease;
+  animation-iteration-count: 2;
+  animation-direction: alternate;
+}
+@keyframes slideDown {
+  0% {
+    top: -100%;
+    opacity: 0;
+  }
+  10%,
+  20%,
+  30%,
+  40%,
+  50%,
+  60%,
+  70%,
+  80%,
+  90%,
+  100% {
+    top: 5%;
+    opacity: 1;
+  }
+}
+/* ================ MEDIA QUERIES (SMALL DEVICES) ============= */
+
+@media screen and (max-width: 600px) {
+  .contact__container form {
+    width: 100%;
+    margin: 0 auto;
+  }
+}

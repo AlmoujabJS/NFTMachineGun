@@ -1,0 +1,20 @@
+.about__container {
+  display: grid;
+  gap: 2rem;
+  background: var(--color-white);
+  color: black;
+  padding: 2rem;
+  border-radius: 2rem;
+  margin-top: 2rem;
+}
+.about__container h3 {
+  color: var(--color-orange);
+  font-size: 2rem;
+}
+.about__container > * {
+  text-align: center;
+}
+.about__container p:last-child {
+  font-size: 0.9rem;
+  font-weight: 500;
+}

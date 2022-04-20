@@ -1,0 +1,55 @@
+.intro__container {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.intro__container .logo {
+  margin-bottom: 1rem;
+}
+.intro__container .logo h3 {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+}
+.intro__container .logo h3::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -60%;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  z-index: -1;
+  background: url("https://pngimage.net/wp-content/uploads/2018/05/colour-brush-png-1.png");
+  background-size: 100%;
+  opacity: 0.8;
+}
+.intro__container .logo__icon svg {
+  font-size: 2rem;
+}
+.intro__container .logo__icon path {
+  stroke: var(--color-orange) !important;
+}
+.intro__container h1 {
+  font-size: 2.5rem;
+}
+.intro__container p {
+  width: 50%;
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+.intro__container a {
+  width: fit-content;
+}
+/* ================ MEDIA QUERIES (SMALL DEVICES) ============= */
+
+@media screen and (max-width: 600px) {
+  .intro__container p {
+    width: 90%;
+  }
+}

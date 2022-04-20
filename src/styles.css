@@ -1,0 +1,220 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+@import url("./images.css");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --color-orange: #f26a5b;
+  --color-light-orange: #fba641;
+  --color-white: white;
+  --color-dark-blue: #141b4a;
+  --color-violet: #632c8f;
+  --linear-bg: linear-gradient(45deg, #141b4a, #632c8f);
+  --linear-bg-orange: linear-gradient(
+    to left,
+    var(--color-orange),
+    var(--color-light-orange)
+  );
+  --linear-bg-orange-reverse: linear-gradient(
+    to right,
+    var(--color-orange),
+    var(--color-light-orange)
+  );
+  --container-width-lg: 75%;
+  --container-width-md: 80%;
+  --container-width-sm: 90%;
+  --transition: all 400ms ease;
+}
+
+body {
+  background: var(--linear-bg);
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 0.05rem;
+  color: var(--color-white);
+  position: relative;
+}
+body::after {
+  content: "";
+
+  display: block;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--NFT-BG);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  opacity: 0.75;
+  z-index: -1;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 1rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #21252950;
+  border-radius: 1rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #212529a0;
+}
+a {
+  color: var(--color-white);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.container {
+  margin: 0 auto;
+  width: var(--container-width-lg);
+}
+.btn {
+  outline: none;
+  border: 1px solid transparent;
+  color: var(--color-white);
+  font-size: 0.9rem;
+  font-family: "Roboto";
+  letter-spacing: 0.1rem;
+  padding: 0.65rem 1.3rem;
+  border-radius: 6rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  transition: var(--transition);
+  position: relative;
+}
+.btn-primary {
+  z-index: 2;
+}
+
+.btn-primary::after,
+.btn-primary::before {
+  content: "";
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: var(--linear-bg-orange);
+  z-index: -1;
+  transition: var(--transition);
+  border-radius: 6rem;
+}
+.btn-primary:hover::after {
+  opacity: 0;
+}
+.btn-primary::before {
+  background: var(--linear-bg-orange-reverse) !important;
+}
+.text {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.25;
+}
+.linear-border {
+  position: relative;
+}
+.linear-border::after {
+  content: "";
+  width: 0;
+  height: 0.2rem;
+  display: block;
+  position: absolute;
+  bottom: -0.3rem;
+  background: var(--linear-bg-orange);
+  transition: var(--transition);
+}
+.linear-border:hover::after,
+.linear-border.active::after {
+  width: 100%;
+}
+
+/*FORM INPUT STYLE*/
+.input__text_custom {
+  position: relative;
+}
+.text_input_c {
+  font-size: 1rem;
+  font-weight: 300;
+  font-family: Roboto;
+  padding: 0.4rem var(--input-margin);
+  outline: none;
+  border: none;
+  border-bottom: 0.15rem solid var(--color-light-orange);
+  background: transparent;
+  color: var(--color-white);
+  margin-bottom: 1.5rem;
+  resize: none;
+}
+.label_input_c {
+  font-size: 0.9rem;
+  font-weight: 300;
+  margin-left: var(--input-margin);
+  margin-bottom: 0.3rem;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  cursor: text;
+  color: var(--color-light-orange);
+  transition: var(--transition);
+}
+.label_input_c.active {
+  top: -50%;
+}
+.animate-fadein {
+  opacity: 0;
+  animation: fadeIn;
+  animation-duration: 800ms;
+  animation-fill-mode: forwards;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ================ MEDIA QUERIES (SMALL DEVICES) ============= */
+
+@media screen and (max-width: 600px) {
+  body::after {
+    display: none;
+  }
+  .container {
+    width: var(--container-width-sm);
+  }
+}
+
+/* COLOR INSPIRATION: https://www.freepik.com/premium-vector/web-pages-design-composition-creative-smart-network-background-gradient-geometric-forms-light-pastel-colors-perfect-illustration-startup-social-media-advertising-marketing-management_24577851.htm#query=html%20form&position=45&from_view=search
+
+FORM INSPIRATION: https://www.freepik.com/free-vector/gradient-log-landing-page_5414244.htm#page=2&query=contact%20form&position=35&from_view=search */
+/*
+GET ALL POSSIBIOLITIES
+const cartesian = (...a) => a.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())));
+
+
+*/
