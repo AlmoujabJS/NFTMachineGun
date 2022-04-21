@@ -77,7 +77,10 @@ const Contact = () => {
   }
 
   return (
-    <section className="container contact__container animate-fadein">
+    <section
+      id="nft-machinegun-contact-form"
+      className="container contact__container animate-fadein"
+    >
       <form ref={form} id="get_in_touch" onSubmit={sendEmail}>
         <h1>Get In Touch</h1>
         <label htmlFor="input_name">Full Name</label>

@@ -2,7 +2,10 @@ import "./style.css";
 import { GrVirtualMachine } from "react-icons/gr";
 const Intro = () => {
   return (
-    <section className="container intro__container animate-fadein">
+    <section
+      id="nft-machinegun-introduction"
+      className="container intro__container animate-fadein"
+    >
       <div className="logo">
         <h3>
           <span className="logo__icon">

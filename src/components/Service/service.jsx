@@ -142,7 +142,10 @@ const Service = () => {
     LINKS.forEach((link) => link.click());
   };
   return (
-    <section className="container service__container animate-fadein">
+    <section
+      id="nft-layers-creator-tool"
+      className="container service__container animate-fadein"
+    >
       <h1>Import Layers</h1>
       <div className="service__content">
         <p>
