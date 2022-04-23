@@ -6,6 +6,8 @@ import { FaPlus } from "react-icons/fa";
 import "./style.css";
 const process = function (e) {
   e.preventDefault();
+  const worker = new Worker("workers/allPossibleCasesWorker.js");
+
   const outputImagesCn = document.getElementById("outputImagesCn");
   //Get the layers from input
   const INPUT_LAYERS = document.querySelectorAll(".layersInput > *");
@@ -43,73 +45,73 @@ const process = function (e) {
       return image;
     });
   });
-
-  //GET ALL POSSIBLE COMBINATION FUNCTION
-
-  function allPossibleCases(array, result, index) {
-    if (!result) {
-      result = [];
-      index = 0;
-      array = array.map(function (element) {
-        return element.push ? element : [element];
+  let arr = [];
+  IMAGES_LAYERS.map(async (promiseImg, index, x) => {
+    arr.push(await Promise.all(promiseImg));
+    let src = arr.map((images) => {
+      return images.map((image) => {
+        return image.src;
       });
+    });
+
+    if (index == x.length - 1) {
+      worker.postMessage(src);
     }
-    if (index < array.length) {
-      array[index].forEach(function (element) {
-        var a = array.slice(0);
-        a.splice(index, 1, [element]);
-        allPossibleCases(a, result, index + 1);
-      });
-    } else {
-      result.push(array.flat());
-    }
-
-    return result;
-  }
-
-  //MAPPING EVERY POSSIBILITY TO A NEW IMAGE USING CANVAS
-
-  const allPossibleImages = allPossibleCases(IMAGES_LAYERS).map((image) => {
-    return Promise.all(image);
   });
 
-  // Create Canvas Images
-
-  const drawImage = (imgCombinations) => {
-    return imgCombinations.map(async (imgComb) => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      const _img = await imgComb;
-
-      canvas.width = _img[0].width;
-      canvas.height = _img[0].height;
-
-      for (let img of await imgComb) {
-        ctx.drawImage(img, 0, 0, _img[0].width, _img[0].height);
-      }
-
-      return canvas;
+  worker.addEventListener("message", (e) => {
+    //MAPPING EVERY POSSIBILITY TO A NEW IMAGE USING CANVAS
+    let allPossibleCases = e.data.map((imgGroup) => {
+      return imgGroup.map((img) => {
+        let createImage = new Image();
+        createImage.src = img;
+        return createImage;
+      });
     });
-  };
-  //Append images to imageContainer
-  Promise.all(drawImage(allPossibleImages)).then((images) => {
-    images.forEach((img, index) => {
-      const outputImages = document.querySelector(".outputImages");
-      const IMAGE = document.createElement("div");
-      const DOWNLOAD = document.createElement("div");
-      const BUTTON = document.createElement("button");
-      IMAGE.classList.add("Image");
-      IMAGE.append(img);
-      IMAGE.append(DOWNLOAD);
+    const allPossibleImages = allPossibleCases.map((image) => {
+      return Promise.all(image);
+    });
 
-      BUTTON.innerHTML = `<a href="${img.toDataURL()}" download="Art-${index}.png">Download</a>`;
-      BUTTON.classList.add("btn");
+    // Create Canvas Images
 
-      DOWNLOAD.classList.add("download");
-      DOWNLOAD.append(BUTTON);
-      outputImages.append(IMAGE);
+    const drawImage = (imgCombinations) => {
+      return imgCombinations.map(async (imgComb) => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const _img = await imgComb;
+
+        canvas.width = _img[0].width;
+        canvas.height = _img[0].height;
+
+        for (let img of await imgComb) {
+          ctx.drawImage(img, 0, 0, _img[0].width, _img[0].height);
+        }
+
+        return canvas;
+      });
+    };
+
+    //Append images to imageContainer
+    Promise.all(drawImage(allPossibleImages)).then((images) => {
+      images.forEach((img, index) => {
+        const outputImages = document.querySelector(".outputImages");
+        const IMAGE = document.createElement("div");
+        const DOWNLOAD = document.createElement("div");
+        const BUTTON = document.createElement("button");
+        IMAGE.classList.add("Image");
+        IMAGE.append(img);
+        IMAGE.append(DOWNLOAD);
+
+        BUTTON.innerHTML = `<a href="${img.toDataURL()}" download="Art-${index}.png">Download</a>`;
+        BUTTON.classList.add("btn");
+
+        DOWNLOAD.classList.add("download");
+        DOWNLOAD.append(BUTTON);
+        outputImages.append(IMAGE);
+      });
     });
   });
+
   outputImagesCn.classList.add("active");
 };
 const Service = () => {

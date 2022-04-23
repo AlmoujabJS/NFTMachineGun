@@ -1,2 +1,2 @@
 # NFTMachineGun
-Now you can make your nft project wihtout knowning programming or using diffuclte steps.
+Turn image layers into thousands of uniquely code generated artworks is very easy now !
