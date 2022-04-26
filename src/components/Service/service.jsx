@@ -167,21 +167,6 @@ const Service = () => {
               <FaPlus /> <span>Add Layer</span>
             </button>
           </div>
-
-          {/* <div className="outputDimentions">
-          <div className="input__text_custom outputDimentions__width">
-            <label className="label_input_c" htmlFor="output_width">
-              Width
-            </label>
-            <input className="text_input_c" id="output_width" type="text" />
-          </div>
-          <div className="input__text_custom outputDimentions__height">
-            <label className="label_input_c" htmlFor="output_Height">
-              Height
-            </label>
-            <input className="text_input_c" id="output_Height" type="text" />
-          </div>
-        </div> */}
           <div className="add-layer"></div>
           <div className="processing">
             <button className="btn process_btn" onClick={process}>
