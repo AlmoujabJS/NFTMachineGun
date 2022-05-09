@@ -3,11 +3,15 @@ import LayerInput from "./LayerInput";
 import { GrClose } from "react-icons/gr";
 import { BsDownload } from "react-icons/bs";
 import { FaPlus } from "react-icons/fa";
+import Fast from "../../fast_js/fast";
 import "./style.css";
+
 const process = function (e) {
   e.preventDefault();
+  const worker = new Worker("workers/allPossibleCasesWorker.js");
+
   const outputImagesCn = document.getElementById("outputImagesCn");
-  //Get the layers from input
+  //Get the layers from inputs
   const INPUT_LAYERS = document.querySelectorAll(".layersInput > *");
   const LAYERS = [...INPUT_LAYERS]
     .filter((layer) => layer.hasAttribute("data-layer"))
@@ -16,23 +20,21 @@ const process = function (e) {
     })
     .filter((layer) => layer.length > 0);
 
-  //Check if the Layer is empty Close the function
+  //Check: if the Layer is empty Close the function
 
   if (LAYERS.length === 0) return;
+
   //Make an Object of Images
   //This will return a promise for every file - that promise contain array of image
-  const IMAGES_LAYERS = LAYERS.map((fileList) => {
-    //Mapping The SubArrays To Image
-    return fileList.map(async (file) => {
+  const IMAGES_LAYERS = Fast.map(LAYERS, (fileList) => {
+    return Fast.map(fileList, async (file) => {
       let image;
 
       const reader = new FileReader();
 
-      const getImg = new Promise((resolve, reject) => {
+      const getImg = new Promise((resolve) => {
         reader.addEventListener("load", () => {
-          const img = new Image();
-          img.src = reader.result;
-          resolve(img);
+          resolve(reader.result);
         });
         reader.readAsDataURL(file);
       });
@@ -44,56 +46,55 @@ const process = function (e) {
     });
   });
 
-  //GET ALL POSSIBLE COMBINATION FUNCTION
-
-  function allPossibleCases(array, result, index) {
-    if (!result) {
-      result = [];
-      index = 0;
-      array = array.map(function (element) {
-        return element.push ? element : [element];
+  //Sending images src to worker for get all possibilities
+  let arr = [];
+  Fast.map(IMAGES_LAYERS, async (promiseImg, index, x) => {
+    arr.push(await Promise.all(promiseImg));
+    let src = Fast.map(arr, (ImgSources) => {
+      return Fast.map(ImgSources, (src) => {
+        return src;
       });
+    });
+
+    if (index === x.length - 1) {
+      worker.postMessage(src);
     }
-    if (index < array.length) {
-      array[index].forEach(function (element) {
-        var a = array.slice(0);
-        a.splice(index, 1, [element]);
-        allPossibleCases(a, result, index + 1);
-      });
-    } else {
-      result.push(array.flat());
-    }
-
-    return result;
-  }
-
-  //MAPPING EVERY POSSIBILITY TO A NEW IMAGE USING CANVAS
-
-  const allPossibleImages = allPossibleCases(IMAGES_LAYERS).map((image) => {
-    return Promise.all(image);
   });
 
-  // Create Canvas Images
-
-  const drawImage = (imgCombinations) => {
-    return imgCombinations.map(async (imgComb) => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      const _img = await imgComb;
-
-      canvas.width = _img[0].width;
-      canvas.height = _img[0].height;
-
-      for (let img of await imgComb) {
-        ctx.drawImage(img, 0, 0, _img[0].width, _img[0].height);
-      }
-
-      return canvas;
+  worker.addEventListener("message", (e) => {
+    //MAPPING EVERY POSSIBILITY TO A NEW IMAGE USING CANVAS
+    let allPossibleCases = Fast.map(e.data, (imgGroup) => {
+      return Fast.map(imgGroup, (img) => {
+        let createImage = new Image();
+        createImage.src = img;
+        return createImage;
+      });
     });
-  };
-  //Append images to imageContainer
-  Promise.all(drawImage(allPossibleImages)).then((images) => {
-    images.forEach((img, index) => {
+    const allPossibleImages = Fast.map(allPossibleCases, (image) => {
+      return Promise.all(image);
+    });
+
+    // Create Canvas Images
+
+    const drawImage = (imgCombinations) => {
+      return Fast.map(imgCombinations, async (imgComb) => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d", { alpha: false });
+        const _img = await imgComb;
+
+        canvas.width = _img[0].width;
+        canvas.height = _img[0].height;
+
+        for (let img of await imgComb) {
+          ctx.drawImage(img, 0, 0, _img[0].width, _img[0].height);
+        }
+
+        return canvas;
+      });
+    };
+
+    //Append images to imageContainer
+    function appendToImgContainer(img, index) {
       const outputImages = document.querySelector(".outputImages");
       const IMAGE = document.createElement("div");
       const DOWNLOAD = document.createElement("div");
@@ -101,15 +102,24 @@ const process = function (e) {
       IMAGE.classList.add("Image");
       IMAGE.append(img);
       IMAGE.append(DOWNLOAD);
-
       BUTTON.innerHTML = `<a href="${img.toDataURL()}" download="Art-${index}.png">Download</a>`;
       BUTTON.classList.add("btn");
 
       DOWNLOAD.classList.add("download");
       DOWNLOAD.append(BUTTON);
+
       outputImages.append(IMAGE);
+    }
+
+    Fast.forEach(drawImage(allPossibleImages), (c, index) => {
+      setTimeout(() => {
+        c.then((r) => {
+          appendToImgContainer(r, index);
+        }, 0);
+      });
     });
   });
+
   outputImagesCn.classList.add("active");
 };
 const Service = () => {
